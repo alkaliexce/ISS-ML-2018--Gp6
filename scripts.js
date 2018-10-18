@@ -51,19 +51,45 @@ function preProcessDate(date){
 }
 function preProcessTown(town){
     //TODO we need to determine all possible towns and then use one-hot encoding to encode this field
-    return town;
+    // There are 26 unique towns.
+    //[ANG MO KIO,BEDOK,BISHAN,BUKIT BATOK,BUKIT MERAH,BUKIT PANJANG,BUKIT TIMAH,CENTRAL AREA,CHOA CHU KANG,CLEMENTI,GEYLANG,HOUGANG,JURONG EAST,JURONG WEST,KALLANG/WHAMPOA,MARINE PARADE,PASIR RIS,PUNGGOL,QUEENSTOWN,SEMBAWANG,
+    //SENGKANG,SERANGOON,TAMPINES,TOA PAYOH,WOODLANDS,YISHUN]
+    var map_array=['ANG MO KIO','BEDOK','BISHAN','BUKIT BATOK','BUKIT MERAH','BUKIT PANJANG',
+        'BUKIT TIMAH','CENTRAL AREA','CHOA CHU KANG','CLEMENTI','GEYLANG','HOUGANG','JURONG EAST','JURONG WEST',
+        'KALLANG/WHAMPOA','MARINE PARADE','PASIR RIS','PUNGGOL','QUEENSTOWN',
+        'SEMBAWANG','SENGKANG','SERANGOON','TAMPINES','TOA PAYOH','WOODLANDS','YISHUN'];
+    var result = new Array(26).fill(0);
+    for (i = 0; i <map_array.length;i++){
+        if (town==map_array[i]){
+            result[i]=1;
+        }
+    }
+    return result;
 }
 function preProcessFlat(flat_type){
     //TODO we need to determine all possible flat types then use one-hot encoding
-    return flat_type;
+    //7 possible types
+     var map_array=['1 ROOM','2 ROOM','3 ROOM','4 ROOM','5 ROOM','EXECUTIVE','MULTI-GENERATION'];
+     var result = new Array(7).fill(0);
+    for (i = 0; i <map_array.length;i++){
+        if (flat_type==map_array[i]){
+            result[i]=1;
+        }
+    }
+    return result;
 }
+
 function preProcessBlockStreet(block_street){
     //block street is intuitively difficult to manage, so we shall ignore
     return [];
 }
 function preProcessStorey(storey_range){
-    //TODO we need to determine all possible flat models then use one-hot encoding
-    return storey_range;
+    /* we might be able to simply take the middle of the X to Y(eg, 1 to 3 = 2) and come up with a primitive variable
+    we can then also choose not to one-hot encode the data and instead take use the values as-is
+    because intuitively the height of a building does correlate to its price premium.
+    */
+    var split = storey_range.split(" TO ");
+    return ((parseInt(split[0])+parseInt(split[1]))/2);
 }
 function preProcessArea(floor_area){
     //TODO we can consider pre-processing this value such as normalisation
@@ -71,7 +97,18 @@ function preProcessArea(floor_area){
 }
 function preProcessFlatModel(flat_model){
     //TODO we need to determine all possible flat models then use one-hot encoding
-    return flat_model;
+    //21 unique flat models
+    var map_array=['Improved','New Generation','Model A','Standard','Simplified',
+        'Premium Apartment','Maisonette','Apartment','Model A2','Type S1','Type S2',
+        'Adjoined flat','Terrace','DBSS','Model A-Maisonette','Premium Maisonette',
+        'Multi Generation','Premium Apartment Loft','Improved-Maisonette','2-room','Premium Apartment'];
+     var result = new Array(21).fill(0);
+    for (i = 0; i <map_array.length;i++){
+        if (flat_model==map_array[i]){
+            result[i]=1;
+        }
+    }
+    return result;
 }
 function preProcessLease(lease){
     //TODO we can consider pre-processing this value such as normalisation
