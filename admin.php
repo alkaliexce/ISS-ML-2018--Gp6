@@ -11,9 +11,9 @@ and open the template in the editor.
     </head>
     <body>
         
-        <a href ='retrain.php'>Retrain Model (upload a CSV)</a>
+        <a href ='onlinetrain.php'>Add data to Model (train on new data point)</a>
         </br>
-        <a href='train.php'>Train Model (Add rows)</a>
+        <a href='train.php'>Re-Train/Initialise Model (Upload a CSV and get a brand new model)</a>
          </br>
         <a href="downloadModel.php">Download Model</a>
     </body>

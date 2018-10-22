@@ -6,4 +6,18 @@ function convertDate(date){
     return (year-2015 + mth).toString();
 }
 
+function getX(arr){
+    var res = arr.map(function(val){
+        return val.slice(0,-1);
+    });
+    return res;
+}
 
+function getY(arr){
+       var column = [];
+       for(var i=0; i<arr.length; i++){
+           var x = parseInt(arr[i][59])
+          column.push(x);
+       }
+       return column;
+}

@@ -10,8 +10,10 @@ and open the template in the editor.
         <title></title>
                 <script src="PapaParse/papaparse.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.0"> </script>
         <script src="helpers.js"></script>
-        <script src="scripts.js"></script>
+        <script src="preprocess_scripts.js"></script>
+        <script src="tensorflow_scripts.js"></script>
     </head>
     <body>
 <script>
@@ -23,28 +25,27 @@ and open the template in the editor.
     Papa.parse(file, {
       dynamicTyping: true,
       complete: function(results) {
-        var tabl = document.getElementById("table1");
+          //remove the first row (headers)
         results.data.shift();
+        //remove the last row (empty row)
         results.data.pop();
+        //pre-process the array
         disp = preProcessArray(results.data);
-        disp.forEach(function(i){
-            
-        var row = tabl.insertRow(-1);
-        var cell= row.insertCell(0);
-        cell.innerHTML = i.toString()
-        })
-        
+        //train the model using pre-processed array and upload to server
+        trainModel(getX(disp),getY(disp),15);
+        alert('Trained model saved!');
       }
     });
+
+    
   }
  
   $(document).ready(function(){
     $("#csv-file").change(handleFileSelect);
   });
 </script>
-<input type="file" id="csv-file" name="files"/>
-<p id="out"> TEXT HERE </p>
-<table id="table1" border=1>
-</table>
-    </body>
+<h1>Upload Data</h1>
+<p>Here we can upload the dataset directly taken from data.gov</p>
+Upload Data : <input type="file" id="csv-file" name="files" value = "Upload Data"/>
+
 </html>

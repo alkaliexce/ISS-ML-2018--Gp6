@@ -113,6 +113,7 @@ function preProcessFlatModel(flat_model){
 function preProcessLease(lease){
     //TODO we can consider pre-processing this value such as normalisation
     return lease;
+    //return 1970-parseInt(lease);
 }
 function preProcessLeaseRemainder(remaining_lease){
     //TODO we can consider pre-processing this value such as normalisation
