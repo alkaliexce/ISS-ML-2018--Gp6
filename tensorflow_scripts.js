@@ -9,6 +9,7 @@ function generateModel(){
 }
 
 async function trainModel(X,Y,iterations){
+    alert('Training data... Please do not close window...');
 tf.setBackend('cpu');
     // How many examples the model should "see" before making a parameter update.
 model = generateModel();
@@ -21,7 +22,11 @@ for (var i =0;i<iterations;i++){
     const h = await model.fit(x=Xs,y=Ys,verbose=2);
     console.log(h.history.loss[0]);
     }
+    alert("Saving Data to server... Please do not close window...");
     await model.save("http://localhost:83/updateModel.php");
+    
+        alert('Trained model saved!');
+        window.location.href = "admin.php";
 }
 
 async function addRow(model,X,Y,iterations){

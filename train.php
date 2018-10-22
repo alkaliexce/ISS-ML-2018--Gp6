@@ -25,6 +25,7 @@ and open the template in the editor.
     Papa.parse(file, {
       dynamicTyping: true,
       complete: function(results) {
+          alert("Training Data! Please do not close window...");
           //remove the first row (headers)
         results.data.shift();
         //remove the last row (empty row)
@@ -33,7 +34,6 @@ and open the template in the editor.
         disp = preProcessArray(results.data);
         //train the model using pre-processed array and upload to server
         trainModel(getX(disp),getY(disp),15);
-        alert('Trained model saved!');
       }
     });
 

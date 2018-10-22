@@ -87,6 +87,7 @@ function preProcessStorey(storey_range){
     /* we might be able to simply take the middle of the X to Y(eg, 1 to 3 = 2) and come up with a primitive variable
     we can then also choose not to one-hot encode the data and instead take use the values as-is
     because intuitively the height of a building does correlate to its price premium.
+    In this case, we choose to take the average storey level
     */
     var split = storey_range.split(" TO ");
     return ((parseInt(split[0])+parseInt(split[1]))/2);

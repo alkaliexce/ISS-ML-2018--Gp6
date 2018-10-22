@@ -15,6 +15,10 @@ and open the template in the editor.
         </br>
         <a href='train.php'>Re-Train/Initialise Model (Upload a CSV and get a brand new model)</a>
          </br>
-        <a href="downloadModel.php">Download Model</a>
+         <?php if (file_exists(__DIR__.'/model/model.json')&&file_exists(__DIR__.'/model/model.weights.bin')){?>
+         Model Last Updated: <?php echo date("F d Y H:i:s.",filemtime(__DIR__.'/model/model.json')); ?> <a href='deleteModel.php' onclick="return confirm('Confirm Deletion of model?')">[Delete?]</a>
+         <?php } else{?>
+         No uploaded Model yet!
+         <?php }?>
     </body>
 </html>
