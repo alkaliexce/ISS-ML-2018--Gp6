@@ -22,9 +22,10 @@ and open the template in the editor.
     </head>
     <body>
 		<div class="container">
-			<h1>HDB price prediction</h1>
-			
-			<div style="width:60%;">
+			<div>
+				<div class=" text-center">
+					<h1>HDB price prediction</h1>
+				</div>
 				<div class="form-group row">
 					<label for="date"  class="col-sm-4 col-form-label">Date</label>
 					<div class="col-sm-8 ">
