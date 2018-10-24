@@ -3,7 +3,7 @@ function convertDate(date){
     var str = date.toString().split("-");
     var year = parseInt(str[0]);
     var mth = parseInt(str[1]);
-    return (year-2015 + mth).toString();
+    return ((year-2015)*12 + mth).toString();
 }
 
 function getX(arr){

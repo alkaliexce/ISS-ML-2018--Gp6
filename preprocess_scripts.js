@@ -89,7 +89,9 @@ function preProcessStorey(storey_range){
     because intuitively the height of a building does correlate to its price premium.
     In this case, we choose to take the average storey level
     */
-    var split = storey_range.split(" TO ");
+   //if storey range is just a integer storey, we use it as it is.
+   if (!isNaN(storey_range)){return storey_range;}
+    var split = storey_range.toString().split(" TO ");
     return ((parseInt(split[0])+parseInt(split[1]))/2);
 }
 function preProcessArea(floor_area){

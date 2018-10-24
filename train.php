@@ -33,7 +33,7 @@ and open the template in the editor.
         //pre-process the array
         disp = preProcessArray(results.data);
         //train the model using pre-processed array and upload to server
-        trainModel(getX(disp),getY(disp),15);
+        trainModel(getX(disp),getY(disp),10);
       }
     });
 

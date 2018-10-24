@@ -18,7 +18,9 @@ and open the template in the editor.
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<script src="preprocess_scripts.js"></script>
+                <script src="helpers.js"></script>
         <script src="tensorflow_scripts.js"></script>
+        <script src="PapaParse/papaparse.min.js"></script>
     </head>
     <body>
 		<div class="container">
@@ -30,7 +32,7 @@ and open the template in the editor.
 					<label for="date"  class="col-sm-4 col-form-label">Date</label>
 					<div class="col-sm-8 ">
 						<div class="input-group date">
-							<input type="text" class="form-control" id="date"  placeholder="2018-01" />
+							<input type="text" class="form-control" id="date"  value="2018-01" />
 							<div class="input-group-append">
 								<span class="fa fa-calendar input-group-text" aria-hidden="true "></span>
 							</div>
@@ -40,7 +42,7 @@ and open the template in the editor.
 				<div class="form-group row">
 					<label for="town"  class="col-sm-4 col-form-label">Town</label>
 					<div class="col-sm-8">
-						<select class="form-control" id="town" placeholder="Please select one" >
+						<select class="form-control" id="town" value="Please select one" >
 							<option value="">Please select one</option>
 							<option value="ANG MO KIO">ANG MO KIO</option>
 							<option value="BEDOK">BEDOK</option>
@@ -74,7 +76,7 @@ and open the template in the editor.
 				<div class="form-group row">
 					<label for="flatType"  class="col-sm-4 col-form-label">Flat Type</label>
 					<div class="col-sm-8">
-						<select class="form-control" id="flatType"  placeholder="Choose one" >
+						<select class="form-control" id="flatType"  value="Choose one" >
 							<option value="">Please select one</option>
 							<option value="1 ROOM">1 ROOM</option>
 							<option value="2 ROOM">2 ROOM</option>
@@ -89,7 +91,7 @@ and open the template in the editor.
 				<div class="form-group row">
 					<label for="flatModel"  class="col-sm-4 col-form-label">Flat Model</label>
 					<div class="col-sm-8">
-						<select class="form-control" id="flatModel"  placeholder="Choose one" >
+						<select class="form-control" id="flatModel"  value="Choose one" >
 							<option value="">Please select one</option>
 							<option value="Improved">Improved</option>
 							<option value="New Generation">New Generation</option>
@@ -118,20 +120,20 @@ and open the template in the editor.
 				<div class="form-group row">
 					<label for="Storey"  class="col-sm-4 col-form-label">Storey</label>
 					<div class="col-sm-8">
-						<input type="text" class="form-control" id="Storey"  placeholder="10" onkeypress="return isNumberKey(event)"/>
+						<input type="text" class="form-control" id="Storey"  value="10" onkeypress="return isNumberKey(event)"/>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="FloorArea"  class="col-sm-4 col-form-label">Floor Area(sqm)</label>
 					<div class="col-sm-8">
-						<input type="text" class="form-control" id="FloorArea"  placeholder="60" onkeypress="return isNumberKey(event)"/>
+						<input type="text" class="form-control" id="FloorArea"  value="60" onkeypress="return isNumberKey(event)"/>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="LeaseStarted"  class="col-sm-4 col-form-label">Lease Started</label>
 					<div class="col-sm-8">
 						<div class="input-group date">
-							<input type="text" class="form-control" id="LeaseStarted"  placeholder="1986" onkeypress="return isNumberKey(event)"/>
+							<input type="text" class="form-control" id="LeaseStarted"  value="1986" onkeypress="return isNumberKey(event)"/>
 							<div class="input-group-append">
 								<span class="fa fa-calendar input-group-text" aria-hidden="true "></span>
 							</div>
@@ -141,7 +143,7 @@ and open the template in the editor.
 				<div class="form-group row">
 					<label for="LeaseRemaining" class="col-sm-4 col-form-label" >Lease Remaining</label>
 					<div class="col-sm-8">
-						<input type="text" class="form-control" id="LeaseRemaining"  placeholder="60" onkeypress="return isNumberKey(event)" />
+						<input type="text" class="form-control" id="LeaseRemaining"  value="60" onkeypress="return isNumberKey(event)" />
 					</div>
 				</div>
 				<div class="form-group row">
@@ -165,9 +167,13 @@ and open the template in the editor.
 		viewMode: "years", 
 		minViewMode: "years" 
 	});
-	function showValue(){
+	async function showValue(){
         //TODO we load the model via tf.model.load then run a client-side predict to get the expected value.
-		alert(	"date : " + $("#date").val() + "\n" +
+        inputArray = [$("#date").val(),$("#town").val(),$("#flatType").val(),0,0,$("#Storey").val(),$("#FloorArea").val(),$("#flatModel").val(),$("#LeaseStarted").val(),$("#LeaseRemaining").val(),0];
+        inputArray=preProcessData(inputArray);
+        inputArray.splice(-1,1);
+        alert("Estimated price of flat is : " + await predict(inputArray));
+        /*alert(	"date : " + $("#date").val() + "\n" +
 				"Town : " + $("#town").val() + "\n" +
 				"Flat Type : " + $("#flatType").val() + "\n" +
 				"Flat Model : " + $("#flatModel").val() + "\n" +
@@ -176,6 +182,7 @@ and open the template in the editor.
 				"Lease Started : " + $("#LeaseStarted").val() + "\n" +
 				"Lease Remaining : " + $("#LeaseRemaining").val() + "\n" 
 			);
+        */
     }
 	
 	function isNumberKey(evt) {
@@ -184,10 +191,7 @@ and open the template in the editor.
 			return false;
 		return true;
 	}
-    function predictPrice(){
-        //TODO we load the model via tf.model.load then run a client-side predict to get the expected value.
-		
-    }
+
 	
     </script>
 </html>
