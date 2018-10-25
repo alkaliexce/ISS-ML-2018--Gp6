@@ -152,6 +152,24 @@ and open the template in the editor.
 					</div>
 				</div>
 			</div>
+			<table class="table" id="myTable">
+				<thead class="thead-dark">
+					<tr>
+					  <th scope="col" width="5%" >#</th>
+					  <th scope="col" width="10%">Date</th>
+					  <th scope="col" width="20%">Town</th>
+					  <th scope="col" width="15%">Flat Type</th>
+					  <th scope="col" width="20%">Flat Model</th>
+					  <th scope="col" width="5%">Storey</th>
+					  <th scope="col" width="5%">Floor Area(sqm)</th>
+					  <th scope="col" width="5%">Lease Started</th>
+					  <th scope="col" width="5%">Lease Remaining</th>
+					  <th scope="col" width="10%">Predicted Price</th>
+					</tr>
+				  </thead>
+				  <tbody>
+				  </tbody>
+			</table>
 		</div>
     </body>
     <script>
@@ -172,17 +190,29 @@ and open the template in the editor.
         inputArray = [$("#date").val(),$("#town").val(),$("#flatType").val(),0,0,$("#Storey").val(),$("#FloorArea").val(),$("#flatModel").val(),$("#LeaseStarted").val(),$("#LeaseRemaining").val(),0];
         inputArray=preProcessData(inputArray);
         inputArray.splice(-1,1);
-        alert("Estimated price of flat is : " + await predict(inputArray));
-        /*alert(	"date : " + $("#date").val() + "\n" +
-				"Town : " + $("#town").val() + "\n" +
-				"Flat Type : " + $("#flatType").val() + "\n" +
-				"Flat Model : " + $("#flatModel").val() + "\n" +
-				"Storey : " + $("#Storey").val() + "\n" +
-				"Floor Area(sqm) : " + $("#FloorArea").val() + "\n" +
-				"Lease Started : " + $("#LeaseStarted").val() + "\n" +
-				"Lease Remaining : " + $("#LeaseRemaining").val() + "\n" 
+        /*alert("Estimated price of flat is : " + await predict(inputArray));
+        alert(	"date : " + $("#date").val() + "\n" +
+					"Town : " + $("#town").val() + "\n" +
+					"Flat Type : " + $("#flatType").val() + "\n" +
+					"Flat Model : " + $("#flatModel").val() + "\n" +
+					"Storey : " + $("#Storey").val() + "\n" +
+					"Floor Area(sqm) : " + $("#FloorArea").val() + "\n" +
+					"Lease Started : " + $("#LeaseStarted").val() + "\n" +
+					"Lease Remaining : " + $("#LeaseRemaining").val() + "\n" 
 			);
         */
+		$('#myTable tr:last').after('<tr>'+
+			'<td>'+$('#myTable tr').length +'</td>'+
+			'<td>'+$("#date").val()+'</td>'+
+			'<td>'+$("#town").val()+'</td>'+
+			'<td>'+$("#flatType").val()+'</td>'+
+			'<td>'+$("#flatModel").val()+'</td>'+
+			'<td>'+$("#Storey").val()+'</td>'+
+			'<td>'+$("#FloorArea").val()+'</td>'+
+			'<td>'+$("#LeaseStarted").val()+'</td>'+
+			'<td>'+$("#LeaseRemaining").val()+'</td>'+
+			'<td> $'+await predict(inputArray)+'</td>'+
+		+'</tr>');
     }
 	
 	function isNumberKey(evt) {
