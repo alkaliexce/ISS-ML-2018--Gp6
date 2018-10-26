@@ -39,8 +39,8 @@ function preProcessData(inputRow){
     
     var resale_price = inputRow[10];
     var resale_price_processed = preProcessPrice(resale_price);
-    
-    return [].concat(date_processed).concat(town_processed).concat(flat_type_processed).concat(block_street_processed).
+    //include a bias input
+    return [1].concat(date_processed).concat(town_processed).concat(flat_type_processed).concat(block_street_processed).
             concat(storey_range_processed).concat(floor_area_processed).concat(flat_model_processed).
             concat(lease_processed).concat(remaining_lease_processed).concat(resale_price_processed);
 }
@@ -81,7 +81,7 @@ function preProcessFlat(flat_type){
 
 function preProcessBlockStreet(block_street){
     //block street is intuitively difficult to manage, so we shall ignore
-    return [];
+    return parseInt(block_street[0]);
 }
 function preProcessStorey(storey_range){
     /* we might be able to simply take the middle of the X to Y(eg, 1 to 3 = 2) and come up with a primitive variable
@@ -115,8 +115,8 @@ function preProcessFlatModel(flat_model){
 }
 function preProcessLease(lease){
     //TODO we can consider pre-processing this value such as normalisation
-    return lease;
-    //return 1970-parseInt(lease);
+    //return lease;
+    return parseInt(lease)-1970;
 }
 function preProcessLeaseRemainder(remaining_lease){
     //TODO we can consider pre-processing this value such as normalisation

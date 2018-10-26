@@ -32,6 +32,7 @@ and open the template in the editor.
         results.data.pop();
         //pre-process the array
         disp = preProcessArray(results.data);
+        disp = shuffle(disp);
         //train the model using pre-processed array and upload to server
         trainModel(getX(disp),getY(disp),10);
       }
