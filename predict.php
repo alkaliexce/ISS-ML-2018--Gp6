@@ -152,7 +152,7 @@ and open the template in the editor.
 					</div>
 				</div>
 			</div>
-			<table class="table" id="myTable">
+			<table class="table table-striped" id="myTable">
 				<thead class="thead-dark">
 					<tr>
 					  <th scope="col" width="5%" >#</th>
@@ -201,6 +201,7 @@ and open the template in the editor.
 					"Lease Remaining : " + $("#LeaseRemaining").val() + "\n" 
 			);
         */
+		var price = await predict(inputArray);
 		$('#myTable tr:last').after('<tr>'+
 			'<td>'+$('#myTable tr').length +'</td>'+
 			'<td>'+$("#date").val()+'</td>'+
@@ -211,7 +212,7 @@ and open the template in the editor.
 			'<td>'+$("#FloorArea").val()+'</td>'+
 			'<td>'+$("#LeaseStarted").val()+'</td>'+
 			'<td>'+$("#LeaseRemaining").val()+'</td>'+
-			'<td> $'+await predict(inputArray)+'</td>'+
+			'<td> $'+price.toString().split('.')[0]+'</td>'+
 		+'</tr>');
     }
 	
