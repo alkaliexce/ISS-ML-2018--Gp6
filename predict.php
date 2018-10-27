@@ -7,7 +7,7 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>HDB Price Prediction</title>
          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.0"> </script>
          <script src="helpers.js"></script>
 		 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -23,6 +23,23 @@ and open the template in the editor.
         <script src="PapaParse/papaparse.min.js"></script>
     </head>
     <body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		  <a class="navbar-brand" href="index.php">HDB Price Prediction</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item active">
+				<a class="nav-link" href="predict.php">Predict Price</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="admin.php">Admin Features</a>
+			  </li>
+			</ul>
+		  </div>
+		</nav>
 		<div class="container">
 			<div>
 				<div class=" text-center">
@@ -118,6 +135,12 @@ and open the template in the editor.
 					</div>
 				</div>
 				<div class="form-group row">
+					<label for="Block"  class="col-sm-4 col-form-label">Block</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" id="Block"  value="110"/>
+					</div>
+				</div>
+				<div class="form-group row">
 					<label for="Storey"  class="col-sm-4 col-form-label">Storey</label>
 					<div class="col-sm-8">
 						<input type="text" class="form-control" id="Storey"  value="10" onkeypress="return isNumberKey(event)"/>
@@ -159,7 +182,8 @@ and open the template in the editor.
 					  <th scope="col" width="10%">Date</th>
 					  <th scope="col" width="20%">Town</th>
 					  <th scope="col" width="15%">Flat Type</th>
-					  <th scope="col" width="20%">Flat Model</th>
+					  <th scope="col" width="15%">Flat Model</th>
+					  <th scope="col" width="5%">Block</th>
 					  <th scope="col" width="5%">Storey</th>
 					  <th scope="col" width="5%">Floor Area(sqm)</th>
 					  <th scope="col" width="5%">Lease Started</th>
@@ -187,20 +211,9 @@ and open the template in the editor.
 	});
 	async function showValue(){
         //TODO we load the model via tf.model.load then run a client-side predict to get the expected value.
-        inputArray = [$("#date").val(),$("#town").val(),$("#flatType").val(),0,0,$("#Storey").val(),$("#FloorArea").val(),$("#flatModel").val(),$("#LeaseStarted").val(),$("#LeaseRemaining").val(),0];
+        inputArray = [$("#date").val(),$("#town").val(),$("#flatType").val(),$("#Block").val(),0,$("#Storey").val(),$("#FloorArea").val(),$("#flatModel").val(),$("#LeaseStarted").val(),$("#LeaseRemaining").val(),0];
         inputArray=preProcessData(inputArray);
         inputArray.splice(-1,1);
-        /*alert("Estimated price of flat is : " + await predict(inputArray));
-        alert(	"date : " + $("#date").val() + "\n" +
-					"Town : " + $("#town").val() + "\n" +
-					"Flat Type : " + $("#flatType").val() + "\n" +
-					"Flat Model : " + $("#flatModel").val() + "\n" +
-					"Storey : " + $("#Storey").val() + "\n" +
-					"Floor Area(sqm) : " + $("#FloorArea").val() + "\n" +
-					"Lease Started : " + $("#LeaseStarted").val() + "\n" +
-					"Lease Remaining : " + $("#LeaseRemaining").val() + "\n" 
-			);
-        */
 		var price = await predict(inputArray);
 		$('#myTable tr:last').after('<tr>'+
 			'<td>'+$('#myTable tr').length +'</td>'+
@@ -208,6 +221,7 @@ and open the template in the editor.
 			'<td>'+$("#town").val()+'</td>'+
 			'<td>'+$("#flatType").val()+'</td>'+
 			'<td>'+$("#flatModel").val()+'</td>'+
+			'<td>'+$("#Block").val()+'</td>'+
 			'<td>'+$("#Storey").val()+'</td>'+
 			'<td>'+$("#FloorArea").val()+'</td>'+
 			'<td>'+$("#LeaseStarted").val()+'</td>'+

@@ -1,6 +1,5 @@
 
 function preProcessArray(inputArray){
-    alert('Pre-Processing data...')
     var returnList=[];
     inputArray.forEach( function(i){
         returnList.push(preProcessData(i));

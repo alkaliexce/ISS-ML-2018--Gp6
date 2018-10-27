@@ -10,7 +10,7 @@ function generateModel() {
 }
 
 async function trainModel(X, Y, iterations) {
-    alert('Training data... Please do not close window...');
+    updateProcess("10" , "10% ----- Start training data!" );
     tf.setBackend('webgl');
     // How many examples the model should "see" before making a parameter update.
     model = generateModel();
@@ -18,6 +18,8 @@ async function trainModel(X, Y, iterations) {
 for(i=0;i<iterations;i++){
     X_tmp=X.slice();
     Y_tmp=Y.slice();
+	updateProcess((10 + (80/iterations )* i ).toString() , (10 + (80/iterations ) * i).toString()+"% ----- Start of The " + (i+1).toString() + " iternations " );
+	addProcessMessage("<br/><br/>")
     while (true) {
         X_batch = X_tmp.splice(0, 10000);
         Y_batch = Y_tmp.splice(0, 10000);
@@ -29,14 +31,13 @@ for(i=0;i<iterations;i++){
         //console.log(Xs.print(true));
         //console.log(Ys.print(true));
         const h = await model.fit(x = Xs, y = Ys, {batchsize: 32,  verbose: 2, shuffle: true});
-        console.log(h.history.loss[0]);
+		addProcessMessage(h.history.loss[0]+", ")
     }
+	updateProcess((10 + (80/iterations ) * (i+1)).toString() , (10 + (80/iterations ) * (i+1))+"% ----- End of The " + (i+1).toString() + " iternations " );
 }
-    alert("Saving Data to server... Please do not close window...");
+	updateProcess("90" , "90% ----- Saving Data to server... Please do not close window...  " );
     await model.save("http://localhost:83/updateModel.php");
-
-    alert('Trained model saved!');
-    window.location.href = "admin.php";
+	updateProcess("100" , "100% ----- Trained model saved!   " );
 }
 
 async function addRow(model, X, Y, iterations) {
