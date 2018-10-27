@@ -19,7 +19,7 @@ for(i=0;i<iterations;i++){
     X_tmp=X.slice();
     Y_tmp=Y.slice();
 	updateProcess((10 + (80/iterations )* i ).toString() , (10 + (80/iterations ) * i).toString()+"% ----- Start of The " + (i+1).toString() + " iternations " );
-	addProcessMessage("<br/><br/>")
+	addProcessMessage("<p>MSE Lost: </p>")
     while (true) {
         X_batch = X_tmp.splice(0, 10000);
         Y_batch = Y_tmp.splice(0, 10000);
