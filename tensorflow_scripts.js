@@ -18,8 +18,8 @@ async function trainModel(X, Y, iterations) {
 for(i=0;i<iterations;i++){
     X_tmp=X.slice();
     Y_tmp=Y.slice();
-	updateProcess((10 + (80/iterations )* i ).toString() , (10 + (80/iterations ) * i).toString()+"% ----- Start of The " + (i+1).toString() + " iternations " );
-	addProcessMessage("<p>MSE Lost: </p>")
+	updateProcess((10 + (80/iterations )* i ).toString() , (10 + (80/iterations ) * i).toString()+"% ----- Start of iteration #" + (i+1).toString());
+	addProcessMessage("<p>Loss(RMSE):</p>");
     while (true) {
         X_batch = X_tmp.splice(0, 10000);
         Y_batch = Y_tmp.splice(0, 10000);
@@ -31,27 +31,36 @@ for(i=0;i<iterations;i++){
         //console.log(Xs.print(true));
         //console.log(Ys.print(true));
         const h = await model.fit(x = Xs, y = Ys, {batchsize: 32,  verbose: 2, shuffle: true});
-		addProcessMessage(h.history.loss[0]+", ")
+		addProcessMessage("<p>"+parseInt(Math.sqrt(h.history.loss[0]))+"</p>");
     }
-	updateProcess((10 + (80/iterations ) * (i+1)).toString() , (10 + (80/iterations ) * (i+1))+"% ----- End of The " + (i+1).toString() + " iternations " );
+	updateProcess((10 + (80/iterations ) * (i+1)).toString() , (10 + (80/iterations ) * (i+1))+"% ----- End of iteration #" + (i+1).toString() );
 }
 	updateProcess("90" , "90% ----- Saving Data to server... Please do not close window...  " );
     await model.save("http://localhost:83/updateModel.php");
 	updateProcess("100" , "100% ----- Trained model saved!   " );
 }
 
-async function addRow(model, X, Y, iterations) {
+async function addRow(X, Y, iterations) {
+    const model = await tf.loadModel('/model/model.json');
+    sum=0;
+    n=0;
+    model.compile({optimizer: 'adam', loss: 'meanSquaredError'});
     tf.setBackend('webgl');
-    Xs = tf.tensor(X);
-    Ys = tf.tensor(Y);
+    
+        Xs=tf.tensor(X);
+        Ys=tf.tensor(Y);
+    for(i=0;i<iterations;i++){
+        
     console.log(Xs.print(true));
     console.log(Ys.print(true));
-
-    for (var i = 0; i < iterations; i++) {
-        const h = await model.fit(x = Xs, y = Ys, verbose = 2);
-        console.log(h.history.loss[0]);
+    const h = await model.fit(x = Xs, y = Ys, {batchsize: 32,  verbose: 2, shuffle: true});
+    
+    sum=sum+parseInt(h.history.loss[0]);
+    n=n+1
     }
+
     await model.save("http://localhost:83/updateModel.php");
+    return parseInt(Math.sqrt(sum/n));
 }
 
 

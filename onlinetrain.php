@@ -169,14 +169,20 @@ and open the template in the editor.
 						<input type="text" class="form-control" id="LeaseRemaining"  value="60" onkeypress="return isNumberKey(event)" />
 					</div>
 				</div>
+                            <div class="form-group row">
+                                <label for="LeaseRemaining" class="col-sm-4 col-form-label" >Resale Price</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="ResalePrice"  value="200000" onkeypress="return isNumberKey(event)" />
+                                </div>
+                            </div>
 				<div class="form-group row">
 					<div class="col-sm-12 text-center">
-						<button class="btn btn-primary" onclick="uploadDate()">Upload data</button>
+						<button class="btn btn-primary" onclick="uploadData()">Upload data</button>
 					</div>
 				</div>
 			</div>
 			<div class="alert alert-success" style=" display:none" role="alert" id="successMsg">
-				Success upload the data
+                            Success upload the data (RMSE: <a id="RMSE"></a>)
 			</div>
         </div>
         <?php
@@ -195,9 +201,16 @@ and open the template in the editor.
 			viewMode: "years", 
 			minViewMode: "years" 
 		});
-		async function uploadDate(){
+		async function uploadData(){
+                    var inputArray=[$('#date').val(),$('#town').val(),$('#flatType').val(),
+                        $('#Block').val(),0,$('#Storey').val(), $('#FloorArea').val(),
+                        $('#flatModel').val(),$('#LeaseStarted').val(),$('#LeaseRemaining').val(),
+                        $('#ResalePrice').val()];
+                    var ppArray=preProcessData(inputArray);
+                    X=await addRow(getX([ppArray]),getY([ppArray]),10);
 			//TODO we load the model via tf.model.load then run a client-side predict to get the expected value.
 			$("#successMsg").show();
+                        $("#RMSE").text(X);
 		}
 		
 		function isNumberKey(evt) {
