@@ -8,7 +8,7 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title></title>
-		<title>HDB Price Prediction</title>
+		<title>Model evaluation</title>
          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.0"> </script>
          <script src="helpers.js"></script>
 		 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -33,20 +33,16 @@ and open the template in the editor.
     Papa.parse(file, {
       dynamicTyping: true,
       complete: function(results) {
-		  $("#divProgress").show();
-		  $("#progressMessage").html("");
-		  updateProcess("0","0% ----- Training Data! Please do not close window...")
-          //remove the first row (headers)
         results.data.shift();
         //remove the last row (empty row)
         results.data.pop();
         //pre-process the array
-		updateProcess("1","1% ------ Start of Preparing the data")
+		
         disp = preProcessArray(results.data);
         disp = shuffle(disp);
-		updateProcess("10","10% ----- End of Preparing the data")
         //train the model using pre-processed array and upload to server
-        trainModel(getX(disp),getY(disp),20);
+        evaluateModel(getX(disp),getY(disp));
+        //trainModel(getX(disp),getY(disp),10);
       }
     });
   }
@@ -54,15 +50,10 @@ and open the template in the editor.
   $(document).ready(function(){
     $("#csv-file").change(handleFileSelect);
   });
-  function updateProcess(percent, messages)
+  function showEvaluatedRMSE(error)
   {
-		$("#divProgressBar").width(percent + "%");
-		$("#spanProgress").text(percent + "%");
-		$("#progressMessage").prepend("<p>"+messages+"</p>");
-  }
-  function addProcessMessage(messages)
-  {
-		$("#progressMessage").prepend(messages);
+      $("#resultDiv").show();
+	$("#evaluateResult").text("RMS error: " + error);
   }
 </script>
 <body>
@@ -86,10 +77,13 @@ and open the template in the editor.
 	<div class="container">
 		<div>
 			<div class=" text-center">
-				<h1>Upload Data</h1>
+				<h1>Evaluate Model</h1>
 			</div>
+                    <div>
+                        <h3><a style="color: red">WARNING:</a> Please clear browser cache before use as your browser may cache the preloaded model. This will result in wrong values!!!</h3>
+                    </div>
 			<div class="alert alert-info" role="alert">
-				<p>Here we can upload the dataset directly taken from data.gov </p>
+				<p>Here we can use a test dataset to evaluate model accuracy</p>
 				<div class="input-group mb-3">
 				  <div class="input-group-prepend">
 					<span class="input-group-text">Upload</span>
@@ -100,15 +94,8 @@ and open the template in the editor.
 				  </div>
 				</div>
 			</div>
-			<div class="alert alert-secondary" style="display:none" id="divProgress" role="alert">
-				<h4>Training Progress</h4>
-				<div class="progress">
-				  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  id="divProgressBar"><span id="spanProgress"></span></div>
-				</div>
-				<br/>
-				<h4>Training Progress Messages</h4>
-				<div id="progressMessage">
-				</div>
+			<div class="alert alert-secondary" style="display:none" id="resultDiv" role="alert">
+                            <a id="evaluateResult"></a>
 			</div>
 		</div>
 	</div>			

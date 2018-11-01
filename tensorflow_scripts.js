@@ -1,7 +1,8 @@
 function generateModel() {
     model = tf.sequential();
     model.add(tf.layers.dense({units: 61, inputShape: 61, activation: 'relu'}));
-    model.add(tf.layers.dense({units: 1000, activation: 'relu'}));
+    model.add(tf.layers.dense({units: 100, activation: 'relu'}));
+    model.add(tf.layers.dense({units: 500, activation: 'relu'}));
     model.add(tf.layers.dense({units: 100, activation: 'relu'}));
     model.add(tf.layers.dense({units: 60, activation: 'relu'}));
     model.add(tf.layers.dense({units: 1}));
@@ -71,4 +72,25 @@ async function predict(inputArray) {
     predictedTensor = model.predict(inputTensor);
     return parseInt(Array.from(predictedTensor.dataSync()));
     //alert(model.getWeights());
+}
+
+async function evaluateModel(X,Y){
+    tf.setBackend('cpu');
+    const model = await tf.loadModel('/model/model.json');
+    
+    Xs=tf.tensor(X);
+    predictedTensor=model.predict(Xs);
+    predictedArray=Array.from(predictedTensor.dataSync());
+    if (predictedArray.length!=Y.length){
+        alert('Error');
+    }
+    else{
+        err=0
+    for (i=0;i<Y.length;i++){
+        squaredError=Math.pow((predictedArray[i]-Y[i]),2);
+        err=err+squaredError;
+    }
+    showEvaluatedRMSE(parseInt(Math.sqrt(err/Y.length)));
+        }
+    
 }

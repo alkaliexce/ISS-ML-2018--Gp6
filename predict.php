@@ -45,6 +45,9 @@ and open the template in the editor.
 				<div class=" text-center">
 					<h1>HDB price prediction</h1>
 				</div>
+                                                <div>
+                        <h3><a style="color: red">WARNING:</a> Please clear browser cache before use as your browser may cache the preloaded model. This will result in wrong values!!!</h3>
+                    </div>
 				<div class="form-group row">
 					<label for="date"  class="col-sm-4 col-form-label">Date</label>
 					<div class="col-sm-8 ">

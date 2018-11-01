@@ -48,6 +48,9 @@ and open the template in the editor.
 			<div class="alert alert-info" role="alert">
 				Here is the place to <a href='train.php'>Re-Train/Initialise Model (Upload a CSV and get a brand new model)</a>
 			</div>
+                    			<div class="alert alert-info" role="alert">
+				Here is the place to <a href='evaluate.php'>Evaluate Model (Upload a test data CSV and get model accuracy)</a>
+			</div>
 			<div class="alert alert-danger" role="alert">
 			   Existing Model Information: <?php if (file_exists(__DIR__.'/model/model.json')&&file_exists(__DIR__.'/model/model.weights.bin')){?>
 				 Model Last Updated: <?php echo date("F d Y H:i:s.",filemtime(__DIR__.'/model/model.json')); ?> <a href='deleteModel.php' onclick="return confirm('Confirm Deletion of model?')">[Delete?]</a>
