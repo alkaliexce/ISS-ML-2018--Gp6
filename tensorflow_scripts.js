@@ -37,7 +37,7 @@ for(i=0;i<iterations;i++){
 	updateProcess((10 + (80/iterations ) * (i+1)).toString() , (10 + (80/iterations ) * (i+1))+"% ----- End of iteration #" + (i+1).toString() );
 }
 	updateProcess("90" , "90% ----- Saving Data to server... Please do not close window...  " );
-    await model.save("http://localhost:83/updateModel.php");
+    await model.save("updateModel.php");
 	updateProcess("100" , "100% ----- Trained model saved!   " );
 }
 
@@ -60,7 +60,7 @@ async function addRow(X, Y, iterations) {
     n=n+1
     }
 
-    await model.save("http://localhost:83/updateModel.php");
+    await model.save("updateModel.php");
     return parseInt(Math.sqrt(sum/n));
 }
 
