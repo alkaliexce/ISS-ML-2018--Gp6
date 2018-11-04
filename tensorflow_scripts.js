@@ -37,7 +37,8 @@ for(i=0;i<iterations;i++){
 	updateProcess((10 + (80/iterations ) * (i+1)).toString() , (10 + (80/iterations ) * (i+1))+"% ----- End of iteration #" + (i+1).toString() );
 }
 	updateProcess("90" , "90% ----- Saving Data to server... Please do not close window...  " );
-    await model.save("updateModel.php");
+    url = window.location.protocol + "//" + window.location.host + "/" +"updateModel.php"
+    await model.save(url);
 	updateProcess("100" , "100% ----- Trained model saved!   " );
 }
 
@@ -59,8 +60,8 @@ async function addRow(X, Y, iterations) {
     sum=sum+parseInt(h.history.loss[0]);
     n=n+1
     }
-
-    await model.save("updateModel.php");
+    url = window.location.protocol + "//" + window.location.host + "/" +"updateModel.php"
+    await model.save(url);
     return parseInt(Math.sqrt(sum/n));
 }
 

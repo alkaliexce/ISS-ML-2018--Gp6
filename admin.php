@@ -45,7 +45,7 @@ and open the template in the editor.
 			<div class="alert alert-primary" role="alert">
 				Here is the place to <a href ='onlinetrain.php'>Add data to Model</a> (train on new data point) 
 			</div>
-			<div class="alert alert-info" role="alert">
+			<div class="alert alert-secondary" role="alert">
 				Here is the place to <a href='train.php'>Re-Train/Initialise Model (Upload a CSV and get a brand new model)</a>
 			</div>
                     			<div class="alert alert-info" role="alert">
